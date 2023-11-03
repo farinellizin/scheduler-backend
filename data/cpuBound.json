@@ -1,0 +1,53 @@
+{
+    "processes":
+    [
+        {
+            "type": "cpu",
+            "time": 34,
+            "priority": 3,
+            "execTime": 0
+        },
+        {
+            "type": "cpu",
+            "time": 152,
+            "priority": 15,
+            "execTime": 0
+        },
+        {
+            "type": "cpu",
+            "time": 87,
+            "priority": 7,
+            "execTime": 0
+        },
+        {
+            "type": "cpu",
+            "time": 199,
+            "priority": 18,
+            "execTime": 0
+        },
+        {
+            "type": "cpu",
+            "time": 56,
+            "priority": 12,
+            "execTime": 0
+        },
+        {
+            "type": "cpu",
+            "time": 123,
+            "priority": 6,
+            "execTime": 0
+        },
+        {
+            "type": "cpu",
+            "time": 78,
+            "priority": 20,
+            "execTime": 0
+        },
+        {
+            "type": "cpu",
+            "time": 167,
+            "priority": 9,
+            "execTime": 0
+        }
+    ]
+}
