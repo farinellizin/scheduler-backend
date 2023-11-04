@@ -1,7 +1,9 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import readData
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api/firstInFirstOut', methods=['GET'])
 def getData():
@@ -65,21 +67,21 @@ def getData():
 
     return jsonify(returnArr) # envia ao frontend todo o log de execução
 
-@app.route('/api/fairShare', methods=['GET'])
-def getData():
-    teste = 1
+# @app.route('/api/fairShare', methods=['GET'])
+# def getData():
+#     teste = 1
 
-@app.route('/api/lottery', methods=['GET'])
-def getData():
-    teste = 1
+# @app.route('/api/lottery', methods=['GET'])
+# def getData():
+#     teste = 1
 
-@app.route('/api/priorityQueues', methods=['GET'])
-def getData():
-    teste = 1
+# @app.route('/api/priorityQueues', methods=['GET'])
+# def getData():
+#     teste = 1
 
-@app.route('/api/shortestJobFirst', methods=['GET'])
-def getData():
-    teste = 1
+# @app.route('/api/shortestJobFirst', methods=['GET'])
+# def getData():
+#     teste = 1
 
 if __name__ == '__main__':
     app.run(port = 3003)
