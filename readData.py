@@ -14,9 +14,8 @@ def readJson():
                     'type': processo['type'],
                     'time': processo['time'],
                     'priority': processo['priority'],
-                    'quantum': (processo['time'] * 1.1),
                     'idFIFO': i,
-                    'finalExecTime': processo['execTime']
+                    'finalExecTime': 0
                 }
 
                 processesArr.append(process)

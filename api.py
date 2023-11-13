@@ -1,6 +1,48 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import readData
+import random
+random.seed(42)
+
+def defineQuantum(processesArr, type):
+    cpuPercentage = 1 - (type ** len(processesArr))
+    return cpuPercentage
+
+def defineTenPercent(processesArr):
+    for process in processesArr:
+        process['tenPercent'] = int(0.1 * process['time'])
+
+    return processesArr
+
+def defineWeight(type):
+    if type == 'cpu':
+        return 0.7
+    elif type == 'memory':
+        return 0.6
+    else:
+        return 0.5
+
+def clearOutput(output):
+    output = {
+        'processID': '',
+        'action': '',
+        'quantum': '',
+        'processEnded': '',
+        'execTimeIteration': '',
+        'totalExecTime': '',
+        'fullTimeInExecution': '',
+        'processTimeRemaining': '',
+        'idleTimeIteration': '',
+        'totalIdleTime': ''
+    }
+
+    return output
+
+def addFullExecutionTimeAllProcesses(processesArr, timeToAdd):
+    for process in processesArr:
+        process['finalExecTime'] = process['finalExecTime'] + timeToAdd
+
+    return processesArr
 
 app = Flask(__name__)
 CORS(app)
@@ -8,62 +50,149 @@ CORS(app)
 @app.route('/api/firstInFirstOut', methods=['GET'])
 def getData():
     processes = readData.readJson()
+    processes = defineTenPercent(processes)
+
+    filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
+    filaIOBound = ['1', '2', '3', '4', '5']
+    filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
+
+    action = ""
+    output = {
+        'processID': '',
+        'action': '',
+        'quantum': '',
+        'processEnded': '',
+        'execTimeIteration': '',
+        'totalExecTime': '',
+        'fullTimeInExecution': '',
+        'processTimeRemaining': '',
+        'idleTimeIteration': '',
+        'totalIdleTime': ''
+    }
+
     returnArr = []
+    actionHappened = False
 
+    # * Primeiro Looping
     while (len(processes) > 0):
-        process = processes.pop(0) # pegando e removendo o primeiro processo da fila
-        ended = False # avisa que o processo ainda não foi finalizado
+        # 1
+        process = processes.pop(0)
 
-        # definir seu quantum
-        quantum = process['quantum']
+        # 1.5
+        weight = defineWeight(process['type'])
 
-        # porcentagem de execução e tempo ocioso
-        if process['type'] == 'cpu': # processo do tipo CPU
-            execTime = quantum * 0.7 # 70 por cento será executado
-            idleTime = quantum * 0.3 # 30 por cento será ocioso
-        elif process['type'] == 'memory': # processo do tipo MEMÓRIA
-            execTime = quantum * 0.6 # 60 por cento será executado
-            idleTime = quantum * 0.4 # 30 por cento será ocioso
-        else: # processo do tipo IO
-            execTime = quantum * 0.5 # 50 por cento será executado
-            idleTime = quantum * 0.5 # 30 por cento será ocioso
-
-        # verificar se o quantum do processo é menor do que o tempo permitido para execução
-        if process['time'] <= execTime: # significa que o processo será finalizado antes ou no instante da finalização de seu tempo total na iteração atual
-            executionTime = process['time'] # execution time é o tempo restante de execução do processo
-            idleTime = 0 # significa que o idle time na execução atual é 0
-            ended = True # significa que o processo foi finalizado
-
-            for i in processes:
-                i['finalExecTime'] = i['finalExecTime'] + process['time'] # adiciona o tempo que o processo executou (sem ficar ocioso) em todos os outros processos
-
+        # 2 
+        if process['time'] <= process['tenPercent']:
+            quantum = process['tenPercent']
         else:
-            # executionTime receberá o tempo de execução na iteração atual
-            executionTime = execTime
+            quantum = int(process['time'] * (1 + float(f'0.{random.randint(10, 30)}')))
 
-            # remover de process['time'] execTime 
-            process['time'] = process['time'] - execTime
+        # 3
+        if process['type'] == 'cpu':
+            execTime = max(0, int(quantum * defineQuantum(filaCPUBound, weight)))
+        elif process['type'] == 'memory':
+            execTime = max(0, int(quantum * defineQuantum(filaMEMORYBound, weight)))
+        else:
+            execTime = max(0, int(quantum * defineQuantum(filaIOBound, weight)))
 
-            # adicionar execTime em todos os outros processos
-            for i in processes:
-                i['finalExecTime'] = i['finalExecTime'] + quantum
+        idleTime = quantum - execTime
 
-            # adicionar execTime no processo atual
-            process['finalExecTime'] = process['finalExecTime'] + quantum
+        # 4
+        key = 2
 
-            # reinserir na fila
+        # * Segundo Looping
+        while quantum > 0 and process['time'] > 0:
+            i = 0
+            output = clearOutput(output)
+
+            if (key % 2) == 0 and execTime > 0:
+                i = i + 1
+                action = 'execute'
+                actionHappened = True
+
+                if process['time'] == 1 or execTime == 1:
+                    variableExecTime = 1
+                elif process['time'] <= process['tenPercent']:
+                    variableExecTime = max(0, int(process['time'] / 2))
+                elif execTime >= process['time']:
+                    variableExecTime = random.randint(1, process['time'])
+                elif execTime < process['time']:
+                    variableExecTime = random.randint(1, execTime)
+
+                process['time'] = max(0, process['time'] - variableExecTime)
+                quantum = max(0, quantum - variableExecTime)
+                execTime = max(0, execTime - variableExecTime)
+
+                process['finalExecTime'] = process['finalExecTime'] + variableExecTime
+                addFullExecutionTimeAllProcesses(processes, variableExecTime)
+
+                output = {
+                    'processID': process['idFIFO'],
+                    'action': action,
+                    'quantum': quantum,
+                    'processEnded': '',
+                    'execTimeIteration': variableExecTime,
+                    'totalExecTime': execTime,
+                    'fullTimeInExecution': process['finalExecTime'],
+                    'processTimeRemaining': process['time'],
+                    'idleTimeIteration': '',
+                    'totalIdleTime': ''
+                }
+                
+            # 6
+            elif (key % 2) != 0 and idleTime > 0:
+                i = i + 1
+                action = 'idle'
+                actionHappened = True
+
+                if idleTime == 1:
+                    variableIdleTime = 1
+                elif idleTime > 1:
+                    variableIdleTime = random.randint(1, idleTime)
+
+                quantum = max(0, quantum - variableIdleTime)
+                idleTime = max(0, idleTime - variableIdleTime)
+
+                process['finalExecTime'] = process['finalExecTime'] + variableIdleTime
+                addFullExecutionTimeAllProcesses(processes, variableIdleTime)
+
+                output = {
+                    'processID': process['idFIFO'],
+                    'action': action,
+                    'quantum': quantum,
+                    'processEnded': '',
+                    'execTimeIteration': '',
+                    'totalExecTime': '',
+                    'fullTimeInExecution': process['finalExecTime'],
+                    'processTimeRemaining': process['time'],
+                    'idleTimeIteration': variableIdleTime,
+                    'totalIdleTime': idleTime
+                }
+
+            if process['time'] != 0:
+                processEnded = False
+            else:
+                processEnded = True
+
+            output['processEnded'] = processEnded
+
+            if actionHappened:
+                returnArr.append(output)
+            
+            actionHappened = False
+
+            key = random.randint(1, 2)
+
+        # 7
+        if process['time'] != 0:
             processes.append(process)
-
-        output = {
-            'processID': process['idFIFO'], # retorna ao frontEnd a identificação do processo
-            'executionTime': executionTime, # retorna ao frontEnd por quanto tempo o processo será executado na iteração atual
-            'idleTime': idleTime, # retorna ao frontEnd por quanto tempo o processo ficará ocioso na iteração atual
-            'totalQuantum': quantum, # retorna ao frontEnd por quanto tempo o processo ocupará a CPU (idleTime + executionTime)
-            'ended': ended, # retorna ao frontEnd se o processo já foi finalizado, se ended = True, não deve mais ser inserido na fila
-            'fullExecutionTime': process['finalExecTime'] # retorna por quanto tempo o processo já está em execução
-        }
-
-        returnArr.append(output) # insere o output no array de outputs, como se fossem logs
+        else:
+            if process['type'] == 'cpu':
+                filaCPUBound.pop()
+            elif process['type'] == 'memory':
+                filaMEMORYBound.pop()
+            else:
+                filaIOBound.pop()
 
     return jsonify(returnArr) # envia ao frontend todo o log de execução
 
@@ -84,4 +213,4 @@ def getData():
 #     teste = 1
 
 if __name__ == '__main__':
-    app.run(port = 3003)
+    app.run(port = 3001)
