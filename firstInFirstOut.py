@@ -171,6 +171,7 @@ while (len(processes) > 0):
         output['processEnded'] = processEnded
 
         if actionHappened:
+            print(output)
             returnArr.append(output)
         
         actionHappened = False

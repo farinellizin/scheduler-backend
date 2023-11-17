@@ -14,13 +14,22 @@ def defineTenPercent(processesArr):
 
     return processesArr
 
-def defineWeight(type):
+def defineWeight(type, weightArr):
     if type == 'cpu':
-        return 0.7
+        if weightArr[0] is not 0:
+            return weightArr[0]
+        else:
+            return 0.7
     elif type == 'memory':
-        return 0.6
+        if weightArr[1] is not 0:
+            return weightArr[1]
+        else:
+            return 0.6
     else:
-        return 0.5
+        if weightArr[2] is not 0:
+            return weightArr[2]
+        else:
+            return 0.5
 
 def clearOutput(output):
     output = {
@@ -47,8 +56,10 @@ def addFullExecutionTimeAllProcesses(processesArr, timeToAdd):
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/firstInFirstOut', methods=['GET'])
-def getData():
+@app.route('/api/firstInFirstOut/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>', methods=['GET'])
+def getData(from_value, to_value, cpu_weight, memory_weight, io_weight):
+    weightArr = [cpu_weight, memory_weight, io_weight]
+
     processes = readData.readJson()
     processes = defineTenPercent(processes)
 
@@ -79,13 +90,13 @@ def getData():
         process = processes.pop(0)
 
         # 1.5
-        weight = defineWeight(process['type'])
+        weight = defineWeight(process['type'], weightArr)
 
         # 2 
         if process['time'] <= process['tenPercent']:
             quantum = process['tenPercent']
         else:
-            quantum = int(process['time'] * (1 + float(f'0.{random.randint(10, 30)}')))
+            quantum = int(process['time'] * (1 + float(f'0.{random.randint(from_value, to_value)}')))
 
         # 3
         if process['type'] == 'cpu':
@@ -195,6 +206,8 @@ def getData():
                 filaIOBound.pop()
 
     return jsonify(returnArr) # envia ao frontend todo o log de execução
+
+# @app.route('/api/firstInFirstOut/personalDataSet')
 
 # @app.route('/api/fairShare', methods=['GET'])
 # def getData():
