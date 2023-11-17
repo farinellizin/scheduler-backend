@@ -89,14 +89,22 @@ def chooseTypeOfSpreading(lottery):
     elif lottery == 2: spreadEqualTickets(processes)
     else: spreadPriorityTickets(processes)
 
-def chooseWinnerProcess():
+def chooseWinnerProcess(sortedTickets):
     sortedDict = random.choice(sortedTickets)
     listKeys = list(sortedDict.keys())
 
     winnerTicket = listKeys[0]
     process = sortedDict[winnerTicket]
 
+    # print(f'winner: ${winnerTicket} \\ sorted: ${len(sortedTickets)}\\ process: ${process}')
+
     return process
+
+def deleteEndedTickets(sortedTickets, process):
+    for ticket in sortedTickets:
+        print(f'{list(ticket.values())[0]} \\ {process}')
+        if (list(ticket.values())[0] == process):
+            sortedTickets.remove(ticket)
 
 
 if __name__ == '__main__':
@@ -137,7 +145,7 @@ if __name__ == '__main__':
 
     while (len(processes) > 0):
         # 1
-        process = chooseWinnerProcess()
+        process = chooseWinnerProcess(sortedTickets)
         # 1.5
         weight = defineWeight(process['type'])
 
@@ -197,7 +205,8 @@ if __name__ == '__main__':
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': '',
-                    'totalIdleTime': ''
+                    'totalIdleTime': '',
+                    'tickets': process['tickets']
                 }
                 
             # 6
@@ -227,12 +236,14 @@ if __name__ == '__main__':
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': variableIdleTime,
-                    'totalIdleTime': idleTime
+                    'totalIdleTime': idleTime,
+                    'tickets': process['tickets']
                 }
 
             if process['time'] != 0:
                 processEnded = False
             else:
+                deleteEndedTickets(sortedTickets, process)
                 processEnded = True
 
             output['processEnded'] = processEnded
@@ -249,10 +260,12 @@ if __name__ == '__main__':
         if process['time'] != 0:
             processes.append(process)
         else:
-            print(len(filaMEMORYBound), len(filaCPUBound), len(filaIOBound))
+            # print(f'cpu: ${filaCPUBound} \\ memory: ${filaMEMORYBound} \\ io: ${filaIOBound} process: ${process}')
+            # print(process)
             if process['type'] == 'cpu':
                 filaCPUBound.pop()
             elif process['type'] == 'memory':
                 filaMEMORYBound.pop()
             else:
                 filaIOBound.pop()
+
