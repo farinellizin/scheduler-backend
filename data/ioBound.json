@@ -1,34 +1,33 @@
 {
-    "processes":
-    [
+    "processes": [
         {
             "type": "io",
             "time": 41,
-            "priority": 1,
+            "priority": 2,
             "execTime": 0
         },
         {
             "type": "io",
             "time": 115,
-            "priority": 13,
+            "priority": 2,
             "execTime": 0
         },
         {
             "type": "io",
             "time": 176,
-            "priority": 5,
+            "priority": 3,
             "execTime": 0
         },
         {
             "type": "io",
             "time": 92,
-            "priority": 1,
+            "priority": 5,
             "execTime": 0
         },
         {
             "type": "io",
             "time": 68,
-            "priority": 17,
+            "priority": 4,
             "execTime": 0
         }
     ]

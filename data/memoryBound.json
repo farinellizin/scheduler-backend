@@ -1,46 +1,45 @@
 {
-    "processes":
-    [
+    "processes": [
         {
             "type": "memory",
             "time": 143,
-            "priority": 2,
+            "priority": 5,
             "execTime": 0
         },
         {
             "type": "memory",
             "time": 105,
-            "priority": 14,
+            "priority": 5,
             "execTime": 0
         },
         {
             "type": "memory",
             "time": 25,
-            "priority": 8,
-            "execTime": 0
-        },
-        {
-            "type": "memory",
-            "time": 189,
-            "priority": 10,
-            "execTime": 0
-        },
-        {
-            "type": "memory",
-            "time": 60,
-            "priority": 19,
-            "execTime": 0
-        },
-        {
-            "type": "memory",
-            "time": 198,
             "priority": 4,
             "execTime": 0
         },
         {
             "type": "memory",
+            "time": 189,
+            "priority": 4,
+            "execTime": 0
+        },
+        {
+            "type": "memory",
+            "time": 60,
+            "priority": 2,
+            "execTime": 0
+        },
+        {
+            "type": "memory",
+            "time": 198,
+            "priority": 1,
+            "execTime": 0
+        },
+        {
+            "type": "memory",
             "time": 38,
-            "priority": 16,
+            "priority": 3,
             "execTime": 0
         }
     ]
