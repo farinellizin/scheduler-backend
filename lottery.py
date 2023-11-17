@@ -29,7 +29,8 @@ def clearOutput(output):
         'fullTimeInExecution': '',
         'processTimeRemaining': '',
         'idleTimeIteration': '',
-        'totalIdleTime': ''
+        'totalIdleTime': '',
+        'tickets': ''
     }
 
     return output
@@ -39,6 +40,8 @@ def addFullExecutionTimeAllProcesses(processesArr, timeToAdd):
         process['finalExecTime'] = process['finalExecTime'] + timeToAdd
 
     return processesArr
+
+##############################################
 
 
 def hashingTickets(process, tickets):
@@ -84,12 +87,13 @@ def defineTicketsByPriority(priority):
     else: return 2
 
 
-def chooseTypeOfSpreading(lottery):
+def chooseTypeOfSpreading(processes, lottery):
     if lottery == 1: spreadRandomTickets(processes)
     elif lottery == 2: spreadEqualTickets(processes)
     else: spreadPriorityTickets(processes)
 
-def chooseWinnerProcess(sortedTickets):
+def chooseWinnerProcess():
+    print(len(sortedTickets))
     sortedDict = random.choice(sortedTickets)
     listKeys = list(sortedDict.keys())
 
@@ -100,11 +104,10 @@ def chooseWinnerProcess(sortedTickets):
 
     return process
 
-def deleteEndedTickets(sortedTickets, process):
-    for ticket in sortedTickets:
-        print(f'{list(ticket.values())[0]} \\ {process}')
-        if (list(ticket.values())[0] == process):
-            sortedTickets.remove(ticket)
+def deleteEndedTickets(tickets):
+    for t in tickets:
+        del sortedTickets[next(i for i,d in enumerate(sortedTickets) if t in d)]
+        
 
 
 if __name__ == '__main__':
@@ -112,9 +115,10 @@ if __name__ == '__main__':
     import readData
     import random
 
+    random.seed(42)
+
     sortedTickets = []
 
-    random.seed(42)
     
     
     processes = readData.readJson()
@@ -135,17 +139,18 @@ if __name__ == '__main__':
         'fullTimeInExecution': '',
         'processTimeRemaining': '',
         'idleTimeIteration': '',
-        'totalIdleTime': ''
+        'totalIdleTime': '',
+        'tickets': ''
     }
 
     returnArr = []
     actionHappened = False
 
-    chooseTypeOfSpreading(random.randint(1,4))
+    chooseTypeOfSpreading(processes, random.randint(1,4))
 
-    while (len(processes) > 0):
+    while (len(sortedTickets) > 0):
         # 1
-        process = chooseWinnerProcess(sortedTickets)
+        process = chooseWinnerProcess()
         # 1.5
         weight = defineWeight(process['type'])
 
@@ -243,13 +248,13 @@ if __name__ == '__main__':
             if process['time'] != 0:
                 processEnded = False
             else:
-                deleteEndedTickets(sortedTickets, process)
+                deleteEndedTickets(process['tickets'])
                 processEnded = True
 
             output['processEnded'] = processEnded
 
             if actionHappened:
-                # print(output)
+                print(output)
                 returnArr.append(output)
             
             actionHappened = False
@@ -258,10 +263,14 @@ if __name__ == '__main__':
 
         # 7
         if process['time'] != 0:
+
             processes.append(process)
+
         else:
+
             # print(f'cpu: ${filaCPUBound} \\ memory: ${filaMEMORYBound} \\ io: ${filaIOBound} process: ${process}')
-            # print(process)
+
+
             if process['type'] == 'cpu':
                 filaCPUBound.pop()
             elif process['type'] == 'memory':
