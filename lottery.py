@@ -30,7 +30,7 @@ def clearOutput(output):
         'processTimeRemaining': '',
         'idleTimeIteration': '',
         'totalIdleTime': '',
-        'tickets': ''
+        'winnerTicket': ''
     }
 
     return output
@@ -93,7 +93,6 @@ def chooseTypeOfSpreading(processes, lottery):
     else: spreadPriorityTickets(processes)
 
 def chooseWinnerProcess():
-    print(len(sortedTickets))
     sortedDict = random.choice(sortedTickets)
     listKeys = list(sortedDict.keys())
 
@@ -102,7 +101,7 @@ def chooseWinnerProcess():
 
     # print(f'winner: ${winnerTicket} \\ sorted: ${len(sortedTickets)}\\ process: ${process}')
 
-    return process
+    return process, winnerTicket
 
 def deleteEndedTickets(tickets):
     for t in tickets:
@@ -117,9 +116,8 @@ if __name__ == '__main__':
 
     random.seed(42)
 
+    winnerTicket = 0
     sortedTickets = []
-
-    
     
     processes = readData.readJson()
     processes = defineTenPercent(processes)
@@ -140,17 +138,17 @@ if __name__ == '__main__':
         'processTimeRemaining': '',
         'idleTimeIteration': '',
         'totalIdleTime': '',
-        'tickets': ''
+        'winnerTicket': ''
     }
 
     returnArr = []
     actionHappened = False
 
-    chooseTypeOfSpreading(processes, random.randint(1,4))
+    chooseTypeOfSpreading(processes, 3)
 
     while (len(sortedTickets) > 0):
         # 1
-        process = chooseWinnerProcess()
+        process, winnerTicket = chooseWinnerProcess()
         # 1.5
         weight = defineWeight(process['type'])
 
@@ -211,7 +209,7 @@ if __name__ == '__main__':
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': '',
                     'totalIdleTime': '',
-                    'tickets': process['tickets']
+                    'winnerTicket': winnerTicket
                 }
                 
             # 6
@@ -242,7 +240,7 @@ if __name__ == '__main__':
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': variableIdleTime,
                     'totalIdleTime': idleTime,
-                    'tickets': process['tickets']
+                    'winnerTicket': winnerTicket
                 }
 
             if process['time'] != 0:

@@ -9,25 +9,25 @@
         {
             "type": "cpu",
             "time": 152,
-            "priority": 5,
+            "priority": 3,
             "execTime": 0
         },
         {
             "type": "cpu",
             "time": 87,
-            "priority": 5,
-            "execTime": 0
-        },
-        {
-            "type": "cpu",
-            "time": 199,
             "priority": 4,
             "execTime": 0
         },
         {
             "type": "cpu",
-            "time": 56,
+            "time": 199,
             "priority": 1,
+            "execTime": 0
+        },
+        {
+            "type": "cpu",
+            "time": 56,
+            "priority": 5,
             "execTime": 0
         },
         {
@@ -39,13 +39,13 @@
         {
             "type": "cpu",
             "time": 78,
-            "priority": 3,
+            "priority": 4,
             "execTime": 0
         },
         {
             "type": "cpu",
             "time": 167,
-            "priority": 4,
+            "priority": 2,
             "execTime": 0
         }
     ]

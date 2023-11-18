@@ -3,31 +3,31 @@
         {
             "type": "memory",
             "time": 143,
-            "priority": 5,
+            "priority": 3,
             "execTime": 0
         },
         {
             "type": "memory",
             "time": 105,
-            "priority": 5,
+            "priority": 4,
             "execTime": 0
         },
         {
             "type": "memory",
             "time": 25,
-            "priority": 4,
+            "priority": 5,
             "execTime": 0
         },
         {
             "type": "memory",
             "time": 189,
-            "priority": 4,
+            "priority": 2,
             "execTime": 0
         },
         {
             "type": "memory",
             "time": 60,
-            "priority": 2,
+            "priority": 5,
             "execTime": 0
         },
         {
@@ -39,7 +39,7 @@
         {
             "type": "memory",
             "time": 38,
-            "priority": 3,
+            "priority": 5,
             "execTime": 0
         }
     ]
