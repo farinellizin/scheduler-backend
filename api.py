@@ -35,6 +35,7 @@ def defineWeight(type, weightArr):
 def clearOutput(output):
     output = {
         'processID': '',
+        'priority': '',
         'action': '',
         'quantum': '',
         'processEnded': '',
