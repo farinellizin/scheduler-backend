@@ -15,7 +15,8 @@ def readJson():
                     'time': processo['time'],
                     'priority': processo['priority'],
                     'idFIFO': i,
-                    'finalExecTime': 0
+                    'finalExecTime': 0,
+                    'user_id': processo['user_id']
                 }
 
                 processesArr.append(process)
