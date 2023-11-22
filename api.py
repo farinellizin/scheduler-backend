@@ -182,6 +182,7 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
 
                 output = {
                     'processID': process['idFIFO'],
+                    'priority': '',
                     'action': action,
                     'quantum': quantum,
                     'processEnded': '',
@@ -212,6 +213,7 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
 
                 output = {
                     'processID': process['idFIFO'],
+                    'priority': '',
                     'action': action,
                     'quantum': quantum,
                     'processEnded': '',
