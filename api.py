@@ -56,13 +56,14 @@ def addFullExecutionTimeAllProcesses(processesArr, timeToAdd):
     return processesArr
 
 def readProcessesFromUser(dataSetJson):
+    dataSetJson = json.loads(dataSetJson)
     filaCPUBound = []
     filaMEMORYBound = []
     filaIOBound = []
     processes = []
     i = 1
 
-    for processo in dataSetJson["processes"]:
+    for processo in dataSetJson:
         process = {
             'type': processo['type'],
             'time': processo['time'],
@@ -86,8 +87,8 @@ def readProcessesFromUser(dataSetJson):
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/firstInFirstOut/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>', methods=['GET'])
-def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_weight):
+@app.route('/api/firstInFirstOut/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>/<string:dataSet>', methods=['GET'])
+def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_weight, dataSet):
     weightArr = [cpu_weight, memory_weight, io_weight]
 
     if from_value == 0:
@@ -96,12 +97,11 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
     if to_value == 0:
         to_value = 30
 
-    dataSet = request.args.get('dataSet')
-
-    if dataSet is not None:
-        dataSetJson = json.loads(dataSet)
-        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSetJson)
+    if dataSet != '0':
+        print('não none')
+        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
     else:
+        print('none')
         processes = readData.readJson()
         filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
         filaIOBound = ['1', '2', '3', '4', '5']
@@ -257,8 +257,8 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
 # def getData():
 #     teste = 1
 
-@app.route('/api/priorityQueues/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>', methods=['GET'])
-def getDataPersonalInputPQ(from_value, to_value, cpu_weight, memory_weight, io_weight):
+@app.route('/api/priorityQueues/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>/<string:dataSet>', methods=['GET'])
+def getDataPersonalInputPQ(from_value, to_value, cpu_weight, memory_weight, io_weight, dataSet):
     weightArr = [cpu_weight, memory_weight, io_weight]
 
     if from_value == 0:
@@ -267,12 +267,11 @@ def getDataPersonalInputPQ(from_value, to_value, cpu_weight, memory_weight, io_w
     if to_value == 0:
         to_value = 30
 
-    dataSet = request.args.get('dataSet')
-
-    if dataSet is not None:
-        dataSetJson = json.loads(dataSet)
-        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSetJson)
+    if dataSet != '0':
+        print('não none')
+        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
     else:
+        print('none')
         processes = readData.readJson()
         filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
         filaIOBound = ['1', '2', '3', '4', '5']
