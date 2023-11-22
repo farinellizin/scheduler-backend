@@ -4,49 +4,57 @@
             "type": "cpu",
             "time": 34,
             "priority": 5,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 3
         },
         {
             "type": "cpu",
             "time": 152,
             "priority": 3,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 1
         },
         {
             "type": "cpu",
             "time": 87,
             "priority": 4,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 3
         },
         {
             "type": "cpu",
             "time": 199,
             "priority": 1,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 2
         },
         {
             "type": "cpu",
             "time": 56,
             "priority": 5,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 1
         },
         {
             "type": "cpu",
             "time": 123,
             "priority": 3,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 4
         },
         {
             "type": "cpu",
             "time": 78,
             "priority": 4,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 2
         },
         {
             "type": "cpu",
             "time": 167,
             "priority": 2,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 3
         }
     ]
 }
