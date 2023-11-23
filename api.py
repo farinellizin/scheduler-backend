@@ -43,7 +43,8 @@ def clearOutput(output):
         'fullTimeInExecution': '',
         'processTimeRemaining': '',
         'idleTimeIteration': '',
-        'totalIdleTime': ''
+        'totalIdleTime': '',
+        'user_id': ''
     }
 
     return output
@@ -68,7 +69,8 @@ def readProcessesFromUser(dataSetJson):
             'time': processo['time'],
             'priority': processo['priority'],
             'idFIFO': i,
-            'finalExecTime': 0
+            'finalExecTime': 0,
+            'user_id': processo['user_id']
         }
 
         if processo['type'] == 'cpu':
@@ -130,7 +132,8 @@ def getDataFirstInFirstOut(from_value, to_value, cpu_weight, memory_weight, io_w
         'fullTimeInExecution': '',
         'processTimeRemaining': '',
         'idleTimeIteration': '',
-        'totalIdleTime': ''
+        'totalIdleTime': '',
+        'user_id': ''
     }
 
     returnArr = []
@@ -199,7 +202,8 @@ def getDataFirstInFirstOut(from_value, to_value, cpu_weight, memory_weight, io_w
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': '',
-                    'totalIdleTime': ''
+                    'totalIdleTime': '',
+                    'user_id': ''
                 }
                 
             # 6
@@ -229,7 +233,8 @@ def getDataFirstInFirstOut(from_value, to_value, cpu_weight, memory_weight, io_w
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': variableIdleTime,
-                    'totalIdleTime': idleTime
+                    'totalIdleTime': idleTime,
+                    'user_id': ''
                 }
 
             if process['time'] != 0:
@@ -291,7 +296,8 @@ def getDataFairShare(from_value, to_value, cpu_weight, memory_weight, io_weight,
         'fullTimeInExecution': '',
         'processTimeRemaining': '',
         'idleTimeIteration': '',
-        'totalIdleTime': ''
+        'totalIdleTime': '',
+        'user_id': ''
     }
 
     returnArr = []
@@ -360,7 +366,8 @@ def getDataFairShare(from_value, to_value, cpu_weight, memory_weight, io_weight,
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': '',
-                    'totalIdleTime': ''
+                    'totalIdleTime': '',
+                    'user_id': process['user_id']
                 }
                 
             # 6
@@ -390,7 +397,8 @@ def getDataFairShare(from_value, to_value, cpu_weight, memory_weight, io_weight,
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': variableIdleTime,
-                    'totalIdleTime': idleTime
+                    'totalIdleTime': idleTime,
+                    'user_id': process['user_id']
                 }
 
             if process['time'] != 0:
