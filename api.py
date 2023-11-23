@@ -112,8 +112,8 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
     action = ""
     output = {
         'processID': '',
-        'action': '',
         'priority': '',
+        'action': '',
         'quantum': '',
         'processEnded': '',
         'execTimeIteration': '',
