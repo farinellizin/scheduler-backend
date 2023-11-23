@@ -44,25 +44,18 @@ def addFullExecutionTimeAllProcesses(processesArr, timeToAdd):
 
     return processesArr
 
-def organizar_fila(fila):
-    # Cria uma lista para armazenar tuplas (dicionário, frequência)
-    frequencia = {}
+def equalizeUsers(vetor):
+    segundo_vetor = []
 
-    for elemento in fila:
-        # Converte o dicionário para uma tupla ordenada para torná-lo hashable
-        elemento_tupla = tuple(sorted(elemento.items()))
-        frequencia[elemento_tupla] = frequencia.get(elemento_tupla, 0) + 1
+    while len(vetor) > 0:
+        for valor in range(1, 5):
+            for item in vetor:
+                if item['user_id'] == valor:
+                    segundo_vetor.append(item)
+                    vetor.remove(item)
+                    break
 
-    # Ordena os elementos com base em suas frequências
-    fila_ordenada = []
-    while frequencia:
-        for elemento_tupla, count in sorted(frequencia.items()):
-            for _ in range(count):
-                fila_ordenada.append(dict(elemento_tupla))
-            del frequencia[elemento_tupla]
-
-    return fila_ordenada
-
+    return segundo_vetor
 
 processes = readData.readJson()
 processes = defineTenPercent(processes)
@@ -89,18 +82,5 @@ output = {
 returnArr = []
 actionHappened = False
 
+processes = equalizeUsers(processes)
 
-for process in processes:
-    print(process['user_id'])
-
-processes = organizar_fila(processes)
-print()
-print()
-
-for process in processes:
-    print(process['user_id'])
-
-# while (len(processes) > 0):
-#     # ordenar a fila
-    
-#     processes.pop(0)
