@@ -3,14 +3,52 @@
         {
             "type": "memory",
             "time": 143,
+<<<<<<< HEAD
             "priority": 3,
             "execTime": 0
+=======
+            "priority": 2,
+            "execTime": 0,
+            "user_id": 2
+>>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
         },
         {
             "type": "memory",
             "time": 105,
+<<<<<<< HEAD
+=======
+            "priority": 14,
+            "execTime": 0,
+            "user_id": 3
+        },
+        {
+            "type": "memory",
+            "time": 25,
+            "priority": 8,
+            "execTime": 0,
+            "user_id": 1
+        },
+        {
+            "type": "memory",
+            "time": 189,
+            "priority": 10,
+            "execTime": 0,
+            "user_id": 1
+        },
+        {
+            "type": "memory",
+            "time": 60,
+            "priority": 19,
+            "execTime": 0,
+            "user_id": 1
+        },
+        {
+            "type": "memory",
+            "time": 198,
+>>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
             "priority": 4,
-            "execTime": 0
+            "execTime": 0,
+            "user_id": 3
         },
         {
             "type": "memory",
@@ -39,8 +77,14 @@
         {
             "type": "memory",
             "time": 38,
+<<<<<<< HEAD
             "priority": 5,
             "execTime": 0
+=======
+            "priority": 16,
+            "execTime": 0,
+            "user_id": 2
+>>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
         }
     ]
 }

@@ -45,7 +45,11 @@ def clearOutput(output):
         'processTimeRemaining': '',
         'idleTimeIteration': '',
         'totalIdleTime': '',
+<<<<<<< HEAD
         'tickets': ''
+=======
+        'user_id': ''
+>>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
     }
 
     return output
@@ -57,19 +61,21 @@ def addFullExecutionTimeAllProcesses(processesArr, timeToAdd):
     return processesArr
 
 def readProcessesFromUser(dataSetJson):
+    dataSetJson = json.loads(dataSetJson)
     filaCPUBound = []
     filaMEMORYBound = []
     filaIOBound = []
     processes = []
     i = 1
 
-    for processo in dataSetJson["processes"]:
+    for processo in dataSetJson:
         process = {
             'type': processo['type'],
             'time': processo['time'],
             'priority': processo['priority'],
             'idFIFO': i,
-            'finalExecTime': 0
+            'finalExecTime': 0,
+            'user_id': processo['user_id']
         }
 
         if processo['type'] == 'cpu':
@@ -84,6 +90,7 @@ def readProcessesFromUser(dataSetJson):
 
     return processes, filaCPUBound, filaMEMORYBound, filaIOBound
 
+<<<<<<< HEAD
 #FUNÇÕES LOTERIA
 
 def hashingTickets(process, tickets):
@@ -153,26 +160,43 @@ def deleteEndedTickets(tickets):
 
 
 #FIM DA LOTERIA
+=======
+def equalizeUsers(processes):
+    returnArrProcesses = []
+
+    while len(processes) > 0:
+        for valor in range(1, 5):
+            for item in processes:
+                if item['user_id'] == valor:
+                    returnArrProcesses.append(item)
+                    processes.remove(item)
+                    break
+
+    return returnArrProcesses
+>>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
 
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/api/firstInFirstOut/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>', methods=['GET'])
-def getData(from_value, to_value, cpu_weight, memory_weight, io_weight):
+@app.route('/api/firstInFirstOut/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>/<string:dataSet>', methods=['GET'])
+def getDataFirstInFirstOut(from_value, to_value, cpu_weight, memory_weight, io_weight, dataSet):
     weightArr = [cpu_weight, memory_weight, io_weight]
 
     if from_value == 0:
         from_value = 10
-    
+
     if to_value == 0:
         to_value = 30
 
-    processes = readData.readJson()
-    processes = defineTenPercent(processes)
+    if dataSet != '0':
+        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
+    else:
+        processes = readData.readJson()
+        filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
+        filaIOBound = ['1', '2', '3', '4', '5']
+        filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
 
-    filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
-    filaIOBound = ['1', '2', '3', '4', '5']
-    filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
+    processes = defineTenPercent(processes)
 
     action = ""
     output = {
@@ -185,7 +209,8 @@ def getData(from_value, to_value, cpu_weight, memory_weight, io_weight):
         'fullTimeInExecution': '',
         'processTimeRemaining': '',
         'idleTimeIteration': '',
-        'totalIdleTime': ''
+        'totalIdleTime': '',
+        'user_id': ''
     }
 
     returnArr = []
@@ -254,7 +279,8 @@ def getData(from_value, to_value, cpu_weight, memory_weight, io_weight):
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': '',
-                    'totalIdleTime': ''
+                    'totalIdleTime': '',
+                    'user_id': ''
                 }
                 
             # 6
@@ -284,7 +310,8 @@ def getData(from_value, to_value, cpu_weight, memory_weight, io_weight):
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': variableIdleTime,
-                    'totalIdleTime': idleTime
+                    'totalIdleTime': idleTime,
+                    'user_id': ''
                 }
 
             if process['time'] != 0:
@@ -314,8 +341,8 @@ def getData(from_value, to_value, cpu_weight, memory_weight, io_weight):
 
     return jsonify(returnArr) # envia ao frontend todo o log de execução
 
-@app.route('/api/firstInFirstOut/personalDataSet/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>', methods=['GET'])
-def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_weight):
+@app.route('/api/fairShare/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>/<string:dataSet>', methods=['GET'])
+def getDataFairShare(from_value, to_value, cpu_weight, memory_weight, io_weight, dataSet):
     weightArr = [cpu_weight, memory_weight, io_weight]
 
     if from_value == 0:
@@ -324,11 +351,16 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
     if to_value == 0:
         to_value = 30
 
-    dataSet = request.args.get('dataSet')
-    dataSetJson = json.loads(dataSet)
+    if dataSet != '0':
+        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
+    else:
+        processes = readData.readJson()
+        filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
+        filaIOBound = ['1', '2', '3', '4', '5']
+        filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
 
-    processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSetJson)
     processes = defineTenPercent(processes)
+    processes = equalizeUsers(processes)
 
     action = ""
     output = {
@@ -341,7 +373,8 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
         'fullTimeInExecution': '',
         'processTimeRemaining': '',
         'idleTimeIteration': '',
-        'totalIdleTime': ''
+        'totalIdleTime': '',
+        'user_id': ''
     }
 
     returnArr = []
@@ -410,7 +443,8 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': '',
-                    'totalIdleTime': ''
+                    'totalIdleTime': '',
+                    'user_id': process['user_id']
                 }
                 
             # 6
@@ -440,7 +474,8 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
                     'fullTimeInExecution': process['finalExecTime'],
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': variableIdleTime,
-                    'totalIdleTime': idleTime
+                    'totalIdleTime': idleTime,
+                    'user_id': process['user_id']
                 }
 
             if process['time'] != 0:
@@ -470,6 +505,7 @@ def getDataPersonalInput(from_value, to_value, cpu_weight, memory_weight, io_wei
 
     return jsonify(returnArr) # envia ao frontend todo o log de execução
 
+<<<<<<< HEAD
 # @app.route('/api/fairShare', methods=['GET'])
 # def getData():
 #     teste = 1
@@ -636,6 +672,11 @@ def getDataLottery():
 
     return jsonify(returnArr)
 
+=======
+# @app.route('/api/lottery', methods=['GET'])
+# def getData():
+#     teste = 1
+>>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
 
 # @app.route('/api/priorityQueues', methods=['GET'])
 # def getData():
