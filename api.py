@@ -45,11 +45,8 @@ def clearOutput(output):
         'processTimeRemaining': '',
         'idleTimeIteration': '',
         'totalIdleTime': '',
-<<<<<<< HEAD
-        'tickets': ''
-=======
+        'tickets': '',
         'user_id': ''
->>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
     }
 
     return output
@@ -89,9 +86,6 @@ def readProcessesFromUser(dataSetJson):
         i = i + 1
 
     return processes, filaCPUBound, filaMEMORYBound, filaIOBound
-
-<<<<<<< HEAD
-#FUNÇÕES LOTERIA
 
 def hashingTickets(process, tickets):
     for t in tickets:
@@ -149,18 +143,12 @@ def chooseWinnerProcess():
     winnerTicket = listKeys[0]
     process = sortedDict[winnerTicket]
 
-    # print(f'winner: ${winnerTicket} \\ sorted: ${len(sortedTickets)}\\ process: ${process}')
-
     return process, winnerTicket
 
 def deleteEndedTickets(tickets):
     for t in tickets:
         del sortedTickets[next(i for i,d in enumerate(sortedTickets) if t in d)]
        
-
-
-#FIM DA LOTERIA
-=======
 def equalizeUsers(processes):
     returnArrProcesses = []
 
@@ -173,7 +161,6 @@ def equalizeUsers(processes):
                     break
 
     return returnArrProcesses
->>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
 
 app = Flask(__name__)
 CORS(app)
@@ -505,11 +492,6 @@ def getDataFairShare(from_value, to_value, cpu_weight, memory_weight, io_weight,
 
     return jsonify(returnArr) # envia ao frontend todo o log de execução
 
-<<<<<<< HEAD
-# @app.route('/api/fairShare', methods=['GET'])
-# def getData():
-#     teste = 1
-
 @app.route('/api/lottery', methods=['GET'])
 def getDataLottery():
     processes = readData.readJson()
@@ -671,12 +653,6 @@ def getDataLottery():
 
 
     return jsonify(returnArr)
-
-=======
-# @app.route('/api/lottery', methods=['GET'])
-# def getData():
-#     teste = 1
->>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
 
 # @app.route('/api/priorityQueues', methods=['GET'])
 # def getData():
