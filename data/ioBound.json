@@ -3,8 +3,6 @@
         {
             "type": "io",
             "time": 41,
-<<<<<<< HEAD
-=======
             "priority": 1,
             "execTime": 0,
             "user_id": 1
@@ -12,53 +10,30 @@
         {
             "type": "io",
             "time": 115,
-            "priority": 13,
+            "priority": 3,
             "execTime": 0,
             "user_id": 3
         },
         {
             "type": "io",
             "time": 176,
->>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
-            "priority": 5,
+            "priority": 2,
             "execTime": 0,
             "user_id": 2
         },
         {
             "type": "io",
-            "time": 115,
-            "priority": 3,
-            "execTime": 0
-        },
-        {
-            "type": "io",
-            "time": 176,
-            "priority": 2,
-            "execTime": 0
-        },
-        {
-            "type": "io",
             "time": 92,
-<<<<<<< HEAD
             "priority": 4,
-            "execTime": 0
-=======
-            "priority": 1,
             "execTime": 0,
             "user_id": 1
->>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
         },
         {
             "type": "io",
             "time": 68,
-<<<<<<< HEAD
             "priority": 4,
-            "execTime": 0
-=======
-            "priority": 17,
             "execTime": 0,
             "user_id": 4
->>>>>>> f66987546cdd4c748c7ee347b96c79f034ac782f
         }
     ]
 }
