@@ -494,14 +494,26 @@ def getDataFairShare(from_value, to_value, cpu_weight, memory_weight, io_weight,
 
     return jsonify(returnArr) # envia ao frontend todo o log de execução
 
-@app.route('/api/lottery', methods=['GET'])
-def getDataLottery():
-    processes = readData.readJson()
-    processes = defineTenPercent(processes)
+@app.route('/api/lottery/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>/<string:dataSet>', methods=['GET'])
+def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, dataSet):
+   
+    weightArr = [cpu_weight, memory_weight, io_weight]
 
-    filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
-    filaIOBound = ['1', '2', '3', '4', '5']
-    filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
+    if from_value == 0:
+        from_value = 10
+
+    if to_value == 0:
+        to_value = 30
+
+    if dataSet != '0':
+        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
+    else:
+        processes = readData.readJson()
+        filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
+        filaIOBound = ['1', '2', '3', '4', '5']
+        filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
+    
+    processes = defineTenPercent(processes)
 
     action = ""
     output = {
@@ -527,14 +539,13 @@ def getDataLottery():
         # 1
         process, winnerTicket = chooseWinnerProcess()
         # 1.5
-        weight = defineWeight(process['type'])
-
+        weight = defineWeight(process['type'], weightArr)
 
         # 2 
         if process['time'] <= process['tenPercent']:
             quantum = process['tenPercent']
         else:
-            quantum = int(process['time'] * (1 + float(f'0.{random.randint(10, 30)}')))
+            quantum = int(process['time'] * (1 + float(f'0.{random.randint(from_value, to_value)}')))
 
         # 3
         if process['type'] == 'cpu':
