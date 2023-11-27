@@ -130,8 +130,8 @@ def defineTicketsByPriority(priority):
     else: return 2
 
 def chooseTypeOfSpreading(processes, lottery):
-    if lottery == 1: spreadRandomTickets(processes)
-    elif lottery == 2: spreadEqualTickets(processes)
+    if lottery == "acao1": spreadRandomTickets(processes)
+    elif lottery == "acao3": spreadEqualTickets(processes)
     else: spreadPriorityTickets(processes)
 
 def chooseWinnerProcess():
