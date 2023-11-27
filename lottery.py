@@ -144,7 +144,7 @@ if __name__ == '__main__':
     returnArr = []
     actionHappened = False
 
-    chooseTypeOfSpreading(processes, 3)
+    chooseTypeOfSpreading(processes, 1)
 
     while (len(sortedTickets) > 0):
         # 1

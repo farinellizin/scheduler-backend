@@ -2,7 +2,7 @@
     "processes": [
         {
             "type": "cpu",
-            "time": 34,
+            "time": 134,
             "priority": 5,
             "execTime": 0,
             "user_id": 3
@@ -16,7 +16,7 @@
         },
         {
             "type": "cpu",
-            "time": 87,
+            "time": 187,
             "priority": 4,
             "execTime": 0,
             "user_id": 3
@@ -30,7 +30,7 @@
         },
         {
             "type": "cpu",
-            "time": 56,
+            "time": 156,
             "priority": 5,
             "execTime": 0,
             "user_id": 1
@@ -44,7 +44,7 @@
         },
         {
             "type": "cpu",
-            "time": 78,
+            "time": 178,
             "priority": 4,
             "execTime": 0,
             "user_id": 2

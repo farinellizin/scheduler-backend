@@ -130,8 +130,8 @@ def defineTicketsByPriority(priority):
     else: return 2
 
 def chooseTypeOfSpreading(processes, lottery):
-    if lottery == "acao1": spreadRandomTickets(processes)
-    elif lottery == "acao3": spreadEqualTickets(processes)
+    if lottery == "random": spreadRandomTickets(processes)
+    elif lottery == "equal": spreadEqualTickets(processes)
     else: spreadPriorityTickets(processes)
 
 def chooseWinnerProcess():
@@ -505,14 +505,14 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
     if to_value == 0:
         to_value = 30
 
-    if dataSet != '0':
-        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
-    else:
-        processes = readData.readJson()
-        filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
-        filaIOBound = ['1', '2', '3', '4', '5']
-        filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
-    
+    # if dataSet != '0':
+    #     processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
+    # else:
+    processes = readData.readJson()
+    filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
+    filaIOBound = ['1', '2', '3', '4', '5']
+    filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
+
     processes = defineTenPercent(processes)
 
     action = ""
@@ -533,7 +533,11 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
     returnArr = []
     actionHappened = False
 
+    print(processes)
+
+
     chooseTypeOfSpreading(processes, lotteryType)
+
 
     while (len(sortedTickets) > 0):
         # 1

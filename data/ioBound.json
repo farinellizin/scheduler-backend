@@ -2,7 +2,7 @@
     "processes": [
         {
             "type": "io",
-            "time": 41,
+            "time": 141,
             "priority": 5,
             "execTime": 0,
             "user_id": 1
@@ -23,14 +23,14 @@
         },
         {
             "type": "io",
-            "time": 92,
+            "time": 192,
             "priority": 4,
             "execTime": 0,
             "user_id": 1
         },
         {
             "type": "io",
-            "time": 68,
+            "time": 168,
             "priority": 4,
             "execTime": 0,
             "user_id": 4
