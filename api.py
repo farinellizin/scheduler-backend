@@ -494,8 +494,8 @@ def getDataFairShare(from_value, to_value, cpu_weight, memory_weight, io_weight,
 
     return jsonify(returnArr) # envia ao frontend todo o log de execução
 
-@app.route('/api/lottery/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>/<string:dataSet>', methods=['GET'])
-def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, dataSet):
+@app.route('/api/lottery/<int:from_value>/<int:to_value>/<float:cpu_weight>/<float:memory_weight>/<float:io_weight>/<string:dataSet>/<string:lotteryType>', methods=['GET'])
+def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, dataSet, lotteryType):
    
     weightArr = [cpu_weight, memory_weight, io_weight]
 
@@ -533,7 +533,7 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
     returnArr = []
     actionHappened = False
 
-    chooseTypeOfSpreading(processes, 3)
+    chooseTypeOfSpreading(processes, lotteryType)
 
     while (len(sortedTickets) > 0):
         # 1
