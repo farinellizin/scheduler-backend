@@ -46,8 +46,8 @@ def clearOutput(output):
         'processTimeRemaining': '',
         'idleTimeIteration': '',
         'totalIdleTime': '',
-        'tickets': '',
-        'user_id': ''
+        'user_id': '',
+        'winnerTicket': ''
     }
 
     return output
@@ -163,6 +163,7 @@ def equalizeUsers(processes):
 def sortProcessesByTime(processesArr):
     processesArr.sort(key=lambda x: x['time'])
     return processesArr
+
 
 app = Flask(__name__)
 CORS(app)
@@ -505,13 +506,13 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
     if to_value == 0:
         to_value = 30
 
-    # if dataSet != '0':
-    #     processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
-    # else:
-    processes = readData.readJson()
-    filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
-    filaIOBound = ['1', '2', '3', '4', '5']
-    filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
+    if dataSet != '0':
+        processes, filaCPUBound, filaMEMORYBound, filaIOBound = readProcessesFromUser(dataSet)
+    else:
+        processes = readData.readJson()
+        filaCPUBound = ['1', '2', '3', '4', '5', '6', '7', '8']
+        filaIOBound = ['1', '2', '3', '4', '5']
+        filaMEMORYBound = ['1', '2', '3', '4', '5', '6', '7']
 
     processes = defineTenPercent(processes)
 
@@ -527,21 +528,23 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
         'processTimeRemaining': '',
         'idleTimeIteration': '',
         'totalIdleTime': '',
+        'user_id': '',
         'winnerTicket': ''
     }
 
     returnArr = []
     actionHappened = False
 
-    print(processes)
-
-
     chooseTypeOfSpreading(processes, lotteryType)
 
-
-    while (len(sortedTickets) > 0):
+    while (len(processes) > 0):
         # 1
         process, winnerTicket = chooseWinnerProcess()
+
+        for p in processes:
+            if p['idFIFO'] == process['idFIFO']:
+                processes.remove(p)
+
         # 1.5
         weight = defineWeight(process['type'], weightArr)
 
@@ -601,6 +604,7 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': '',
                     'totalIdleTime': '',
+                    'user_id': '',
                     'winnerTicket': winnerTicket
                 }
                 
@@ -632,6 +636,7 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
                     'processTimeRemaining': process['time'],
                     'idleTimeIteration': variableIdleTime,
                     'totalIdleTime': idleTime,
+                    'user_id': '',
                     'winnerTicket': winnerTicket
                 }
 
