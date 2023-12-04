@@ -4,7 +4,6 @@ import readData
 import random
 import json
 random.seed(42)
-sortedTickets = []
 
 def defineQuantum(processesArr, type):
     cpuPercentage = 1 - (type ** len(processesArr))
@@ -88,37 +87,37 @@ def readProcessesFromUser(dataSetJson):
 
     return processes, filaCPUBound, filaMEMORYBound, filaIOBound
 
-def hashingTickets(process, tickets):
+def hashingTickets(sortedTickets, process, tickets):
     for t in tickets:
         sortedTickets.append({t: process})
 
-def spreadRandomTickets(processes):
+def spreadRandomTickets(sortedTickets, processes):
     ticketsList = list(range(1, 101))
 
     for p in processes:
-        tickets = random.choices(ticketsList, k = random.randint(1, 5))
+        tickets = random.sample(ticketsList, k = random.randint(1, 5))
         ticketsList = list(set(ticketsList) - set(tickets))
-        hashingTickets(p, tickets)
+        hashingTickets(sortedTickets, p, tickets)
         p['tickets'] = tickets
 
 
-def spreadEqualTickets(processes):
+def spreadEqualTickets(sortedTickets, processes):
     ticketsList = list(range(1, 101))
 
     for p in processes:
         tickets = random.sample(ticketsList, 5)
         ticketsList = list(set(ticketsList) - set(tickets))
-        hashingTickets(p, tickets)
+        hashingTickets(sortedTickets, p, tickets)
         p['tickets'] = tickets
 
 
-def spreadPriorityTickets(processes):
+def spreadPriorityTickets(sortedTickets, processes):
     ticketsList = list(range(1, 101))
 
     for p in processes:
         tickets = random.sample(ticketsList, defineTicketsByPriority(p['priority']))
         ticketsList = list(set(ticketsList) - set(tickets))
-        hashingTickets(p, tickets)
+        hashingTickets(sortedTickets, p, tickets)
         p['tickets'] = tickets
 
 
@@ -129,12 +128,12 @@ def defineTicketsByPriority(priority):
     elif priority == 4: return 4
     else: return 2
 
-def chooseTypeOfSpreading(processes, lottery):
-    if lottery == "random": spreadRandomTickets(processes)
-    elif lottery == "equal": spreadEqualTickets(processes)
-    else: spreadPriorityTickets(processes)
+def chooseTypeOfSpreading(sortedTickets, processes, lottery):
+    if lottery == "random": spreadRandomTickets(sortedTickets, processes)
+    elif lottery == "equal": spreadEqualTickets(sortedTickets, processes)
+    else: spreadPriorityTickets(sortedTickets, processes)
 
-def chooseWinnerProcess():
+def chooseWinnerProcess(sortedTickets):
     sortedDict = random.choice(sortedTickets)
     listKeys = list(sortedDict.keys())
 
@@ -143,7 +142,7 @@ def chooseWinnerProcess():
 
     return process, winnerTicket
 
-def deleteEndedTickets(tickets):
+def deleteEndedTickets(sortedTickets, tickets):
     for t in tickets:
         del sortedTickets[next(i for i,d in enumerate(sortedTickets) if t in d)]
        
@@ -500,6 +499,8 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
    
     weightArr = [cpu_weight, memory_weight, io_weight]
 
+    sortedTickets = []
+
     if from_value == 0:
         from_value = 10
 
@@ -535,11 +536,11 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
     returnArr = []
     actionHappened = False
 
-    chooseTypeOfSpreading(processes, lotteryType)
+    chooseTypeOfSpreading(sortedTickets, processes, lotteryType)
 
     while (len(processes) > 0):
         # 1
-        process, winnerTicket = chooseWinnerProcess()
+        process, winnerTicket = chooseWinnerProcess(sortedTickets)
 
         for p in processes:
             if p['idFIFO'] == process['idFIFO']:
@@ -643,7 +644,7 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
             if process['time'] != 0:
                 processEnded = False
             else:
-                deleteEndedTickets(process['tickets'])
+                deleteEndedTickets(sortedTickets, process['tickets'])
                 processEnded = True
 
             output['processEnded'] = processEnded
