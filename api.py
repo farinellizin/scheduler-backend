@@ -499,6 +499,8 @@ def getDataLottery(from_value, to_value, cpu_weight, memory_weight, io_weight, d
    
     weightArr = [cpu_weight, memory_weight, io_weight]
 
+    random.seed(42)
+
     sortedTickets = []
 
     if from_value == 0:
